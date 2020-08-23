@@ -2,10 +2,6 @@
 #include <vector>
 #include <numeric>
 #include <tuple>
-#ifdef __DEBUG__TENSOR__
-#include <assert.h>
-#define __ASSERT(expression) assert(expression)
-#endif
 
 namespace cc {
 
@@ -177,7 +173,6 @@ namespace cc {
 		/* ----------- ACCESS OPERATORS ------------- */
 		// [] operator for accessing iterators along dimensions i.e. C++/Python style
 		iterator operator[](const size_t& index) {
-			__ASSERT(!mShape.empty());
 			return iterator(mData.data(), mShape, { index });
 		}
 		template <typename... accessType>
@@ -192,28 +187,24 @@ namespace cc {
 
 		/* ------- ARITHMETIC OPERATORS ------------- */
 		tensor& operator+=(const tensor& in) {
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(this->mData, in.mData)) {
 				x += y;
 			}
 			return *this;
 		}
 		tensor& operator-=(const tensor& in) {
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(this->mData, in.mData)) {
 				x -= y;
 			}
 			return *this;
 		}
 		tensor& operator/=(const tensor& in) {
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(this->mData, in.mData)) {
 				x /= y;
 			}
 			return *this;
 		}
 		tensor& operator*=(const tensor& in) {
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(this->mData, in.mData)) {
 				x *= y;
 			}
@@ -223,7 +214,6 @@ namespace cc {
 		/* -------- NEW ARITHMETIC OPERATORS -------- */
 		tensor operator+(const tensor& in) {
 			tensor<T> out = *this;
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(out.mData, in.mData)) {
 				x += y;
 			}
@@ -231,7 +221,6 @@ namespace cc {
 		}
 		tensor operator-(const tensor& in) {
 			tensor<T> out = *this;
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(out.mData, in.mData)) {
 				x -= y;
 			}
@@ -239,7 +228,6 @@ namespace cc {
 		}
 		tensor operator/(const tensor& in) {
 			tensor<T> out = *this;
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(out.mData, in.mData)) {
 				x /= y;
 			}
@@ -247,7 +235,6 @@ namespace cc {
 		}
 		tensor operator*(const tensor& in) {
 			tensor<T> out = *this;
-			__ASSERT(in.mShape == this->mShape);
 			for (auto [x, y] : zip(out.mData, in.mData)) {
 				x *= y;
 			}
